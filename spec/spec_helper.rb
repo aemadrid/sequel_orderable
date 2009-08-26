@@ -23,7 +23,7 @@ DB.create_table :sites do
 end
 
 DB.create_table :pages do
-  int :id
+  primary_key :id
   varchar :name
   int :pos
   int :parent_id
