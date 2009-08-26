@@ -21,7 +21,7 @@ Given:
     plugin :orderable
   end
 
-item = Item[1]
+  item = Item[1]
 
 The plugin provides access to the previous and next item in the list
 
