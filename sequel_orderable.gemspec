@@ -16,12 +16,12 @@ Gem::Specification.new do |s|
     ".document",
      ".gitignore",
      "CHANGELOG",
-     "COPYING",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
      "lib/sequel_orderable.rb",
+     "sequel_orderable.gemspec",
      "spec/orderable_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
