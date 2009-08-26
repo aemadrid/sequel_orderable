@@ -7,17 +7,18 @@ based on a 'position' field in the database.
 
 Load the plugin into the model:
 
-  is :orderable
+  plugin :orderable
 
 Given:
 
+DB.create_table :items do
+  primary_key :id
+  varchar :name
+  int :position
+end
+
 class Item < Sequel::Model(:items)
-  set_schema do
-    primary_key :id
-    varchar :name
-    int :position
-  end
-  is :orderable, :field => :position
+  plugin :orderable
 end
 
 item = Item[1]
@@ -41,14 +42,15 @@ You can scope the position field by another field.
 
 For example, to allow each user to have their own a distinct orderable list:
 
-class UserItem < Sequel::Model(:items)
-  set_schema do
-    primary_key :id
-    varchar :name
-    int :user_id
-    int :pos
-  end
-  is :orderable, :field => :pos, :scope => :user_id
+DB.create_table :items do
+  primary_key :id
+  varchar :name
+  int :user_id
+  int :pos
+end
+
+class Item < Sequel::Model(:items)
+  plugin :orderable, :field => :pos, :scope => :user_id
 end
 
 All the defined methods will operate within the 'user_id' field's scope.
@@ -59,13 +61,15 @@ All the defined methods will operate within the 'user_id' field's scope.
 require "sequel"
 
 DB = Sequel.sqlite
+
+DB.create_table :items do
+  primary_key :id
+  varchar :name
+  int :position
+end
+
 class Item < Sequel::Model(:items)
-  set_schema do
-    primary_key :id
-    varchar :name
-    int :position
-  end
-  is :orderable, :field => :position
+  plugin :orderable
 end
 
 Item.create_table!

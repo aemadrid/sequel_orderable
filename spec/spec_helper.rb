@@ -4,10 +4,9 @@ require 'sequel'
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require 'orderable'
+require 'sequel_orderable'
 
-Spec::Runner.configure do |config|
-  
+Spec::Runner.configure do |config|  
 end
 
 class Symbol

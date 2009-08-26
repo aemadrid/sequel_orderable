@@ -4,12 +4,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "orderable"
+    gem.name = "sequel_orderable"
     gem.summary = %Q{Update of Aman Gupta's Sequel Orderable Plugin}
     gem.email = "aemadrid@gmail.com"
-    gem.homepage = "http://github.com/aemadrid/orderable"
+    gem.homepage = "http://github.com/aemadrid/sequel_orderable"
     gem.authors = ["Adrian Madrid"]
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 
 rescue LoadError
@@ -18,16 +17,15 @@ end
 
 require 'spec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
+  spec.libs << 'lib'
   spec.spec_files = FileList['spec/**/*_spec.rb']
 end
 
 Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
+  spec.libs << 'lib'
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
 end
-
 
 task :default => :spec
 
