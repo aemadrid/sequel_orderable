@@ -9,6 +9,8 @@ begin
     gem.email = "aemadrid@gmail.com"
     gem.homepage = "http://github.com/aemadrid/sequel_orderable"
     gem.authors = ["Adrian Madrid"]
+    gem.add_dependency "sequel"
+    gem.add_development_dependency "rspec", ">= 1.2.9"
   end
 
 rescue LoadError

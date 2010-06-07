@@ -71,11 +71,11 @@ module Sequel
             if target < current
               ds = self.class.dataset.filter "? >= ? AND ? < ?", orderable_position_field, target, orderable_position_field, current
               ds.filter! orderable_scope_field => orderable_scope_value if orderable_scope_field
-              ds.update orderable_position_field => "#{orderable_position_field} + 1".lit
+              ds.update orderable_position_field => %Q{"#{orderable_position_field}" + 1}.lit
             else
               ds = self.class.dataset.filter "? > ? AND ? <= ?", orderable_position_field, current, orderable_position_field, target
               ds.filter! orderable_scope_field => orderable_scope_value if orderable_scope_field
-              ds.update orderable_position_field => "#{orderable_position_field} - 1".lit
+              ds.update orderable_position_field => %Q{"#{orderable_position_field}" - 1}.lit
             end
             update orderable_position_field => target
           end

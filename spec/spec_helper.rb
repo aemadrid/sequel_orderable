@@ -1,8 +1,8 @@
 require 'spec'
 require 'sequel'
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'sequel_orderable'
 
@@ -19,6 +19,12 @@ DB.create_table :sites do
   primary_key :id
   varchar :name
   int :position
+end
+
+DB.create_table :sites_naughty do
+  primary_key :id
+  varchar :name
+  int :order
 end
 
 DB.create_table :pages do

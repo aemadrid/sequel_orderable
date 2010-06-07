@@ -5,6 +5,26 @@ describe "Orderable" do
   before do
   end
 
+  describe "with SQL keyword for order field" do
+    before :all do
+      @c = Class.new(Sequel::Model(:sites_naughty)) do
+        plugin :orderable, :field => :order
+      end
+    end
+
+    before :each do
+      @c.delete
+      @c.create :name => "hig", :order => 3
+      @c.create :name => "def", :order => 2
+      @c.create :name => "abc", :order => 1
+    end
+
+    it "should work" do
+      @c[:name => "def"].move_to(1)
+      @c.map(&:name).should == %w[  def abc hig  ]
+    end
+  end
+
   describe "without a scope" do
     before :all do
       @c = Class.new(Sequel::Model(:sites)) do
@@ -20,8 +40,8 @@ describe "Orderable" do
     end
 
     it "should return rows in order of position" do
-      @c.map(&:position).should == [1,2,3]
-      @c.map(&:name).should == %w[ abc def hig ]
+      @c.map(&:position).should == [1, 2, 3]
+      @c.map(&:name).should == %w[  abc def hig  ]
     end
 
     it "should define prev and next" do
@@ -36,10 +56,10 @@ describe "Orderable" do
 
     it "should define move_to" do
       @c[:name => "def"].move_to(1)
-      @c.map(&:name).should == %w[ def abc hig ]
+      @c.map(&:name).should == %w[  def abc hig  ]
 
       @c[:name => "abc"].move_to(3)
-      @c.map(&:name).should == %w[ def hig abc ]
+      @c.map(&:name).should == %w[  def hig abc  ]
 
       proc { @c[:name => "abc"].move_to(-1) }.should raise_error(RuntimeError)
       proc { @c[:name => "abc"].move_to(10) }.should raise_error(RuntimeError)
@@ -47,18 +67,18 @@ describe "Orderable" do
 
     it "should define move_to_top and move_to_bottom" do
       @c[:name => "def"].move_to_top
-      @c.map(&:name).should == %w[ def abc hig ]
+      @c.map(&:name).should == %w[  def abc hig  ]
 
       @c[:name => "def"].move_to_bottom
-      @c.map(&:name).should == %w[ abc hig def ]
+      @c.map(&:name).should == %w[  abc hig def  ]
     end
 
     it "should define move_up and move_down" do
       @c[:name => "def"].move_up
-      @c.map(&:name).should == %w[ def abc hig ]
+      @c.map(&:name).should == %w[  def abc hig  ]
 
       @c[:name => "abc"].move_down
-      @c.map(&:name).should == %w[ def hig abc ]
+      @c.map(&:name).should == %w[  def hig abc  ]
 
       proc { @c[:name => "def"].move_up(10) }.should raise_error(RuntimeError)
       proc { @c[:name => "def"].move_down(10) }.should raise_error(RuntimeError)
@@ -84,7 +104,7 @@ describe "Orderable" do
     end
 
     it "should return rows in order of position" do
-      @c.map(&:name).should == %w[ Hm Ps Au P1 P2 P3 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P1 P2 P3  ]
     end
 
     it "should define prev and next" do
@@ -101,10 +121,10 @@ describe "Orderable" do
 
     it "should define move_to" do
       @c[:name => "P2"].move_to(1)
-      @c.map(&:name).should == %w[ Hm Ps Au P2 P1 P3 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P2 P1 P3  ]
 
       @c[:name => "P2"].move_to(3)
-      @c.map(&:name).should == %w[ Hm Ps Au P1 P3 P2 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P1 P3 P2  ]
 
       proc { @c[:name => "P2"].move_to(-1) }.should raise_error(RuntimeError)
       proc { @c[:name => "P2"].move_to(10) }.should raise_error(RuntimeError)
@@ -112,18 +132,18 @@ describe "Orderable" do
 
     it "should define move_to_top and move_to_bottom" do
       @c[:name => "Au"].move_to_top
-      @c.map(&:name).should == %w[ Hm Au Ps P1 P2 P3 ]
+      @c.map(&:name).should == %w[  Hm Au Ps P1 P2 P3  ]
 
       @c[:name => "Au"].move_to_bottom
-      @c.map(&:name).should == %w[ Hm Ps Au P1 P2 P3 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P1 P2 P3  ]
     end
 
     it "should define move_up and move_down" do
       @c[:name => "P2"].move_up
-      @c.map(&:name).should == %w[ Hm Ps Au P2 P1 P3 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P2 P1 P3  ]
 
       @c[:name => "P1"].move_down
-      @c.map(&:name).should == %w[ Hm Ps Au P2 P3 P1 ]
+      @c.map(&:name).should == %w[  Hm Ps Au P2 P3 P1  ]
 
       proc { @c[:name => "P1"].move_up(10) }.should raise_error(RuntimeError)
       proc { @c[:name => "P1"].move_down(10) }.should raise_error(RuntimeError)
